@@ -1,4 +1,4 @@
-module nacosplugin
+module github.com/DMwangnima/nacos-plugin/nacos
 
 go 1.14
 

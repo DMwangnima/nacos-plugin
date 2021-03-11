@@ -1,4 +1,4 @@
-package nacos_plugin
+package nacos
 
 import (
 	"errors"
