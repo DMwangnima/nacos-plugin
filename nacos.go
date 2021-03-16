@@ -2,7 +2,6 @@ package nacos
 
 import (
 	"errors"
-	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
@@ -12,22 +11,18 @@ import (
 	"strconv"
 )
 
-func init() {
-
-}
-
 type nacosRegistry struct {
-	client  ClientOptions
-	server  []ServerOptions
-	options registry.Options
-	naming  naming_client.INamingClient
+	client   ClientOptions
+	server   []ServerOptions
+	instance InstanceOptions
+	options  registry.Options
+	naming   naming_client.INamingClient
 }
 
 func NewRegistry(opts ...registry.Option) registry.Registry {
 	n := &nacosRegistry{
-		client:  ClientOptions{*constant.NewClientConfig()},
-		server:  make([]ServerOptions, 0),
-		options: registry.Options{},
+		client: ClientOptions{*constant.NewClientConfig()},
+		server: make([]ServerOptions, 0),
 	}
 	if err := configure(n, opts...); err != nil {
 		panic(err)
@@ -40,24 +35,46 @@ func configure(n *nacosRegistry, opts ...registry.Option) error {
 		opt(&n.options)
 	}
 
+	// 初始化client
 	if cliOpts, ok := n.options.Context.Value(clientKey{}).([]ClientOption); ok {
 		for _, cliOpt := range cliOpts {
 			cliOpt(&n.client)
 		}
+		if n.client.NamespaceId == "" {
+			return errors.New("missing namespace of client")
+		}
+	} else {
+		return errors.New("missing client options")
 	}
 
+	// 初始化server
 	var defIp = "127.0.0.1"
-	var defPort uint64 = 80
+	var defPort uint64 = 8848
 	if nodes, ok := n.options.Context.Value(serverKey{}).([]ServerNode); ok {
 		for _, node := range nodes {
 			srvOptions := ServerOptions{*constant.NewServerConfig(defIp, defPort)}
 			for _, opt := range node {
 				opt(&srvOptions)
 			}
+			if srvOptions.IpAddr == defIp {
+				return errors.New("missing ipAddr of nacos server")
+			}
 			n.server = append(n.server, srvOptions)
 		}
+	} else {
+		return errors.New("missing server options")
 	}
 
+	// 初始化instance
+	if insOpts, ok := n.options.Context.Value(instanceKey{}).([]InstanceOption); ok {
+		for _, insOpt := range insOpts {
+			insOpt(&n.instance)
+		}
+	} else {
+		return errors.New("missing instance options")
+	}
+
+	// 生成namingClient
 	serverConfigs := make([]constant.ServerConfig, 0)
 	for _, s := range n.server {
 		serverConfigs = append(serverConfigs, s.ServerConfig)
@@ -80,139 +97,52 @@ func (n *nacosRegistry) Options() registry.Options {
 	return n.options
 }
 
-func newRegisterInstanceParams(s *registry.Service) (params []*vo.RegisterInstanceParam, err error) {
+// 逻辑暂定为只注册一个节点
+func (n *nacosRegistry) updateInstance(s *registry.Service) error {
 	if len(s.Nodes) == 0 {
-		return nil, errors.New("require at least one node")
+		return errors.New("require service owning at least one node")
 	}
-	params = make([]*vo.RegisterInstanceParam, 0)
-	var ferr error
-	for _, node := range s.Nodes {
-		_, portStr, err := net.SplitHostPort(node.Address)
-		if err != nil {
-			ferr = err
-			continue
-		}
-		port, err := strconv.Atoi(portStr)
-		if err != nil {
-			ferr = err
-			continue
-		}
-		// 暂定
-		param := &vo.RegisterInstanceParam{
-			Ip:          string(localIP()),
-			Port:        uint64(port),
-			Weight:      1,
-			Enable:      true,
-			Healthy:     true,
-			Metadata:    nil,
-			ClusterName: "CLUSTER",
-			ServiceName: s.Name,
-			GroupName:   "GROUP",
-			Ephemeral:   true,
-		}
-		params = append(params, param)
+	node := s.Nodes[0]
+	_, portStr, err := net.SplitHostPort(node.Address)
+	if err != nil {
+		return err
 	}
-	if ferr != nil {
-		logger.Fatal("some nodes information are not correct")
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		return err
 	}
-	if len(params) == 0 {
-		return nil, errors.New("all the nodes are invalid")
-	}
-	return params, nil
+	n.instance.Port = uint64(port)
+	return nil
 }
 
-// 考虑加入instance参数
+// Register和Deregister都只负责当前Service的注册和撤销
 func (n *nacosRegistry) Register(s *registry.Service, opts ...registry.RegisterOption) error {
 	if n.naming == nil {
 		return errors.New("nacos registry hasn't been initialized")
 	}
 
-	params, err := newRegisterInstanceParams(s)
+	err := n.updateInstance(s)
 	if err != nil {
 		return err
 	}
-	var ferr error
-	var count int
-	for _, param := range params {
-		_, err := n.naming.RegisterInstance(*param)
-		if err != nil {
-			ferr = err
-			continue
-		}
-		count++
-	}
-	if count > 0 && ferr != nil {
-		return errors.New("some nodes failed to register")
-	}
-	if count == 0 {
-		return errors.New("all nodes failed to register")
-	}
-	return nil
-}
-
-func newDeregisterInstanceParams(s *registry.Service) (params []*vo.DeregisterInstanceParam, err error) {
-	if len(s.Nodes) == 0 {
-		return nil, errors.New("")
-	}
-	params = make([]*vo.DeregisterInstanceParam, 0)
-	var ferr error
-	for _, node := range s.Nodes {
-		_, portStr, err := net.SplitHostPort(node.Address)
-		if err != nil {
-			ferr = err
-			continue
-		}
-		port, err := strconv.Atoi(portStr)
-		if err != nil {
-			ferr = err
-			continue
-		}
-		// 暂定
-		param := &vo.DeregisterInstanceParam{
-			Ip:          string(localIP()),
-			Port:        uint64(port),
-			Cluster:     "CLUSTER",
-			ServiceName: s.Name,
-			GroupName:   "GROUP",
-			Ephemeral:   true,
-		}
-		params = append(params, param)
-	}
-	if ferr != nil {
-		logger.Fatal("some nodes information are not correct")
-	}
-	if len(params) == 0 {
-		return nil, errors.New("all the nodes are invalid")
-	}
-	return params, nil
+	_, err = n.naming.RegisterInstance(n.instance.RegisterInstanceParam)
+	return err
 }
 
 func (n *nacosRegistry) Deregister(s *registry.Service, opts ...registry.DeregisterOption) error {
 	if n.naming == nil {
 		return errors.New("nacos registry hasn't been initialized")
 	}
-
-	params, err := newDeregisterInstanceParams(s)
-	if err != nil {
-		return err
+	param := vo.DeregisterInstanceParam{
+		Ip:          n.instance.Ip,
+		Port:        n.instance.Port,
+		Cluster:     n.instance.ClusterName,
+		ServiceName: n.instance.ServiceName,
+		GroupName:   n.instance.GroupName,
+		Ephemeral:   n.instance.Ephemeral,
 	}
-	var ferr error
-	var count int
-	for _, param := range params {
-		_, err := n.naming.DeregisterInstance(*param)
-		if err != nil {
-			ferr = err
-			continue
-		}
-		count++
-	}
-	if count > 0 && ferr != nil {
-		return errors.New("some nodes failed to deregister")
-	}
-	if count == 0 {
-		return errors.New("all nodes failed to deregister")
-	}
-	return nil
+	_, err := n.naming.DeregisterInstance(param)
+	return err
 }
 
 func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*registry.Service, error) {
