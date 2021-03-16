@@ -111,6 +111,7 @@ func (n *nacosRegistry) updateInstance(s *registry.Service) error {
 	if err != nil {
 		return err
 	}
+	n.instance.Ip = localIP()
 	n.instance.Port = uint64(port)
 	return nil
 }
