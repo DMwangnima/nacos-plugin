@@ -6,6 +6,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
+	"github.com/nacos-group/nacos-sdk-go/model"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"net"
 	"strconv"
@@ -166,7 +167,7 @@ func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*reg
 	for _, host := range service.Hosts {
 		node := &registry.Node{
 			Id:       host.InstanceId,
-			Address:  host.Ip + strconv.Itoa(int(host.Port)),
+			Address:  host.Ip + ":" + strconv.Itoa(int(host.Port)),
 			Metadata: host.Metadata,
 		}
 		nodes = append(nodes, node)
@@ -183,30 +184,42 @@ func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*reg
 	return []*registry.Service{rService}, nil
 }
 
-// 需要搞清楚nacos的API
 func (n *nacosRegistry) ListServices(opts ...registry.ListOption) ([]*registry.Service, error) {
 	if n.naming == nil {
 		return nil, errors.New("nacos registry hasn't been initialized")
 	}
 
-	// 暂定
+	var page uint32
+	var serviceList model.ServiceList
+	serviceNames := []string{}
 	param := vo.GetAllServiceInfoParam{
 		NameSpace: n.client.NamespaceId,
 		GroupName: "",
-		PageNo:    0,
-		PageSize:  0,
+		PageNo:    page,
+		PageSize:  10,
+	}
+	get := func() {
+		serviceList, _ = n.naming.GetAllServicesInfo(param)
+	}
+	for get(); serviceList.Count > 0; get() {
+		param.PageNo += 1
+		serviceNames = append(serviceNames, serviceList.Doms...)
 	}
 
-	_, err := n.naming.GetAllServicesInfo(param)
-	if err != nil {
-		return nil, err
+	services := []*registry.Service{}
+	for _, name := range serviceNames {
+		if tmpServices, err := n.GetService(name); err != nil {
+			return nil, err
+		} else {
+			services = append(services, tmpServices...)
+		}
 	}
-	return nil, err
+
+	return services, nil
 }
 
-// nacos-sdk-go已经在内部实现了PushReceiver，所以并不需要再实现Watcher
 func (n *nacosRegistry) Watch(opts ...registry.WatchOption) (registry.Watcher, error) {
-	return nil, nil
+	return newNacosWatcher(n, opts...)
 }
 
 func (n *nacosRegistry) String() string {
