@@ -54,7 +54,8 @@ func subscribeServices(watcher *nacosWatcher) error {
 	defer cancel()
 	finish := make(chan struct{}, len(services))
 	notFinish := make(chan struct{}, len(services))
-	success := make(chan struct{}, len(services))
+	// 广播成功信号
+	success := make(chan struct{})
 	subscribe := func(ctx context.Context, serv *registry.Service) {
 		param := &vo.SubscribeParam{
 			ServiceName:       serv.Name,
@@ -89,9 +90,7 @@ func subscribeServices(watcher *nacosWatcher) error {
 			return errors.New("subscribe failed")
 		case <-finish:
 			if newVal := atomic.AddInt32(&cnt, 1); int(newVal) == len(services) {
-				for i := 0; i < len(services); i++ {
-					success <- struct{}{}
-				}
+				close(success)
 				watcher.services = services
 				return nil
 			}
