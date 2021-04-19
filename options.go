@@ -2,6 +2,7 @@ package nacos
 
 import (
 	"context"
+	"github.com/asim/go-micro/v3/config/source"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
@@ -19,19 +20,27 @@ type InstanceOptions struct {
 	vo.RegisterInstanceParam
 }
 
+type ConfigOptions struct {
+	vo.ConfigParam
+}
+
 type ClientOption func(*ClientOptions)
 
 type ServerOption func(*ServerOptions)
 
-type InstanceOption func(options *InstanceOptions)
+type InstanceOption func(*InstanceOptions)
+
+type ConfigOption func(*ConfigOptions)
 
 type ServerNode []ServerOption
 
-type clientKey struct{}
+type ClientKey struct{}
 
-type serverKey struct{}
+type ServerKey struct{}
 
-type instanceKey struct{}
+type InstanceKey struct{}
+
+type ConfParamKey struct{}
 
 // Client配置项
 func TimeoutMs(time uint64) ClientOption {
@@ -226,12 +235,24 @@ func Ephemeral(flag bool) InstanceOption {
 	}
 }
 
+func DataId(id string) ConfigOption {
+	return func(o *ConfigOptions) {
+		o.DataId = id
+	}
+}
+
+func Group(g string) ConfigOption {
+	return func(o *ConfigOptions) {
+		o.Group = g
+	}
+}
+
 func Client(cliOpts ...ClientOption) registry.Option {
 	return func(o *registry.Options) {
 		if o.Context == nil {
 			o.Context = context.Background()
 		}
-		o.Context = context.WithValue(o.Context, clientKey{}, cliOpts)
+		o.Context = context.WithValue(o.Context, ClientKey{}, cliOpts)
 	}
 }
 
@@ -240,7 +261,7 @@ func Server(srvNodes ...ServerNode) registry.Option {
 		if o.Context == nil {
 			o.Context = context.Background()
 		}
-		o.Context = context.WithValue(o.Context, serverKey{}, srvNodes)
+		o.Context = context.WithValue(o.Context, ServerKey{}, srvNodes)
 	}
 }
 
@@ -249,6 +270,33 @@ func Instance(insOpts ...InstanceOption) registry.Option {
 		if o.Context == nil {
 			o.Context = context.Background()
 		}
-		o.Context = context.WithValue(o.Context, instanceKey{}, insOpts)
+		o.Context = context.WithValue(o.Context, InstanceKey{}, insOpts)
+	}
+}
+
+func ConfClient(cliOpts ...ClientOption) source.Option {
+	return func(o *source.Options) {
+		if o.Context == nil {
+			o.Context = context.Background()
+		}
+		o.Context = context.WithValue(o.Context, ClientKey{}, cliOpts)
+	}
+}
+
+func ConfServer(srvNodes ...ServerNode) source.Option {
+	return func(o *source.Options) {
+		if o.Context == nil {
+			o.Context = context.Background()
+		}
+		o.Context = context.WithValue(o.Context, ServerKey{}, srvNodes)
+	}
+}
+
+func ConfParam(confOpts ...ConfigOption) source.Option {
+	return func(o *source.Options) {
+		if o.Context == nil {
+			o.Context = context.Background()
+		}
+		o.Context = context.WithValue(o.Context, ConfParamKey{}, confOpts)
 	}
 }

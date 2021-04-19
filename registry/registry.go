@@ -11,6 +11,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"net"
 	"strconv"
+	"sync"
 )
 
 type nacosRegistry struct {
@@ -19,12 +20,22 @@ type nacosRegistry struct {
 	instance nacos.InstanceOptions
 	options  registry.Options
 	naming   naming_client.INamingClient
+	mu       sync.Mutex
+	// set,用于记录已查询过的服务
+	services map[string]struct{}
+	// 这个channel应该为缓存channel，否则有阻塞的风险
+	// 用于向watcher传递新请求的服务
+	serviceChan chan string
+	// 标记是否调用过Watch
+	watchFlag bool
 }
 
 func NewRegistry(opts ...registry.Option) registry.Registry {
 	n := &nacosRegistry{
-		client: nacos.ClientOptions{*constant.NewClientConfig()},
-		server: make([]nacos.ServerOptions, 0),
+		client:      nacos.ClientOptions{*constant.NewClientConfig()},
+		server:      make([]nacos.ServerOptions, 0),
+		services:    make(map[string]struct{}),
+		serviceChan: make(chan string, 10),
 	}
 	if err := configure(n, opts...); err != nil {
 		panic(err)
@@ -91,8 +102,9 @@ func configure(n *nacosRegistry, opts ...registry.Option) error {
 	return err
 }
 
+// 不要调用该函数，通过NewRegistry完成初始化
 func (n *nacosRegistry) Init(opts ...registry.Option) error {
-	return configure(n, opts...)
+	return nil
 }
 
 func (n *nacosRegistry) Options() registry.Options {
@@ -113,7 +125,11 @@ func (n *nacosRegistry) updateInstance(s *registry.Service) error {
 	if err != nil {
 		return err
 	}
-	n.instance.Ip = localIP()
+	ip := localIP()
+	if ip == "" {
+		return errors.New("network failed")
+	}
+	n.instance.Ip = ip
 	n.instance.Port = uint64(port)
 	return nil
 }
@@ -128,6 +144,7 @@ func (n *nacosRegistry) Register(s *registry.Service, opts ...registry.RegisterO
 	if err != nil {
 		return err
 	}
+	// TODO:考虑将逻辑抽离出来
 	_, err = n.naming.RegisterInstance(n.instance.RegisterInstanceParam)
 	return err
 }
@@ -153,6 +170,7 @@ func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*reg
 		return nil, errors.New("nacos registry hasn't been initialized")
 	}
 
+	// TODO:考虑是否将clusters与groupName设置为和n.Instance相同的属性
 	param := vo.GetServiceParam{
 		Clusters:    nil,
 		ServiceName: s,
@@ -181,6 +199,17 @@ func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*reg
 		Endpoints: nil,
 		Nodes:     nodes,
 	}
+	// 更新服务set, 并将新的service推入serviceChan中
+	// 思考是否放在另外一个goroutine会更好
+	n.mu.Lock()
+	if _, ok := n.services[s]; !ok {
+		n.services[s] = struct{}{}
+		// 检查是否开启了watcher
+		if n.watchFlag {
+			n.serviceChan <- s
+		}
+	}
+	n.mu.Unlock()
 
 	return []*registry.Service{rService}, nil
 }
@@ -190,22 +219,20 @@ func (n *nacosRegistry) ListServices(opts ...registry.ListOption) ([]*registry.S
 		return nil, errors.New("nacos registry hasn't been initialized")
 	}
 
-	var page uint32
+	var page uint32 = 1
 	var serviceList model.ServiceList
 	serviceNames := []string{}
 	param := vo.GetAllServiceInfoParam{
 		NameSpace: n.client.NamespaceId,
 		GroupName: "",
 		PageNo:    page,
-		PageSize:  10,
+		PageSize:  10000, // 一次性读完所有服务
 	}
-	get := func() {
-		serviceList, _ = n.naming.GetAllServicesInfo(param)
+	serviceList, err := n.naming.GetAllServicesInfo(param)
+	if err != nil {
+		return nil, err
 	}
-	for get(); serviceList.Count > 0; get() {
-		param.PageNo += 1
-		serviceNames = append(serviceNames, serviceList.Doms...)
-	}
+	serviceNames = append(serviceNames, serviceList.Doms...)
 
 	services := []*registry.Service{}
 	for _, name := range serviceNames {
@@ -220,6 +247,9 @@ func (n *nacosRegistry) ListServices(opts ...registry.ListOption) ([]*registry.S
 }
 
 func (n *nacosRegistry) Watch(opts ...registry.WatchOption) (registry.Watcher, error) {
+	n.mu.Lock()
+	n.watchFlag = true
+	n.mu.Unlock()
 	return newNacosWatcher(n, opts...)
 }
 
@@ -229,10 +259,14 @@ func (n *nacosRegistry) String() string {
 
 func localIP() string {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
-	if err != nil {
+	if err != nil || conn == nil {
 		return ""
 	}
-	defer conn.Close()
+	defer func() {
+		if conn != nil {
+			conn.Close()
+		}
+	}()
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 

@@ -1,29 +1,30 @@
-package nacos
+package registry
 
 import (
-	"context"
 	"errors"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/nacos-group/nacos-sdk-go/model"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"strconv"
 	"sync"
-	"sync/atomic"
-	"time"
 )
 
-const bufNum = 20
+const (
+	BUF_NUM = 20
+	RETRIES = 3
+)
 
 type nacosWatcher struct {
-	reg     *nacosRegistry
+	reg *nacosRegistry
+	// 退订重试次数
+	retries int
 	options *registry.WatchOptions
+	mu      sync.RWMutex
+	// key为服务名，value为该service的node set
+	srvNodeMap map[string]map[string]struct{}
 
 	exit chan bool
 	next chan *registry.Result
-
-	services []*registry.Service
-	mu       sync.RWMutex
-	cache    map[string][]model.SubscribeService
 }
 
 func newNacosWatcher(reg *nacosRegistry, opts ...registry.WatchOption) (registry.Watcher, error) {
@@ -32,70 +33,55 @@ func newNacosWatcher(reg *nacosRegistry, opts ...registry.WatchOption) (registry
 		opt(watchOptions)
 	}
 	watcher := &nacosWatcher{
-		reg:     reg,
-		options: watchOptions,
-		exit:    make(chan bool),
-		next:    make(chan *registry.Result, bufNum),
-		cache:   make(map[string][]model.SubscribeService),
+		reg:        reg,
+		retries:    RETRIES,
+		options:    watchOptions,
+		srvNodeMap: make(map[string]map[string]struct{}),
+		exit:       make(chan bool),
+		next:       make(chan *registry.Result, BUF_NUM),
 	}
-	if err := subscribeServices(watcher); err != nil {
-		return nil, err
-	}
+	go watcher.subscribeServices()
 	return watcher, nil
 }
 
-func subscribeServices(watcher *nacosWatcher) error {
-	services, err := watcher.reg.ListServices()
-	if err != nil {
-		return errors.New("invoke nacosRegistry.ListServices failed")
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	finish := make(chan struct{}, len(services))
-	notFinish := make(chan struct{}, len(services))
-	// 广播成功信号
-	success := make(chan struct{})
-	subscribe := func(ctx context.Context, serv *registry.Service) {
+func (w *nacosWatcher) subscribeServices() {
+	retry := func(service string, function func(*vo.SubscribeParam) error) {
 		param := &vo.SubscribeParam{
-			ServiceName:       serv.Name,
-			Clusters:          nil,
-			GroupName:         "",
-			SubscribeCallback: watcher.watcherCallback,
+			ServiceName:       service,
+			SubscribeCallback: w.watcherCallback,
 		}
-		if err = watcher.reg.naming.Subscribe(param); err == nil {
-			finish <- struct{}{}
-			select {
-			case <-success:
-				return
-			case <-ctx.Done():
-				_ = watcher.reg.naming.Unsubscribe(param)
-				// 考虑指数回退重试
+		var err error
+		var i int
+		for i = 0; i < w.retries; i++ {
+			err = function(param)
+			if err != nil {
+				continue
 			}
-		} else {
-			notFinish <- struct{}{}
-			<-ctx.Done()
+			break
+		}
+		if i >= w.retries {
+			// 打日志
 		}
 	}
 
-	for _, service := range services {
-		go subscribe(ctx, service)
-	}
+	services := []string{}
+	// 退出时取消订阅
+	defer func() {
+		for _, service := range services {
+			retry(service, w.reg.naming.Unsubscribe)
+		}
+	}()
 
-	timer := time.NewTimer(10 * time.Second)
-	var cnt int32
 	for {
 		select {
-		case <-notFinish:
-			return errors.New("subscribe failed")
-		case <-finish:
-			if newVal := atomic.AddInt32(&cnt, 1); int(newVal) == len(services) {
-				close(success)
-				watcher.services = services
-				return nil
-			}
-		case <-timer.C:
-			return errors.New("subscribe timeout")
+		case service := <-w.reg.serviceChan:
+			services = append(services, service)
+			w.mu.Lock()
+			w.srvNodeMap[service] = make(map[string]struct{})
+			w.mu.Unlock()
+			go retry(service, w.reg.naming.Subscribe)
+		case <-w.exit:
+			return
 		}
 	}
 }
@@ -106,19 +92,34 @@ func (w *nacosWatcher) watcherCallback(services []model.SubscribeService, err er
 		return
 	}
 	key := services[0].ServiceName
-	w.mu.Lock()
-	var action string
-	if _, ok := w.cache[key]; !ok {
-		action = "create"
-	} else {
-		action = "update"
+	oldNodeSet := make(map[string]struct{})
+	// 创建一个副本
+	w.mu.RLock()
+	for k := range w.srvNodeMap[key] {
+		oldNodeSet[k] = struct{}{}
 	}
-	w.cache[key] = services
-	w.mu.Unlock()
+	w.mu.RUnlock()
+
+	if len(services) == len(oldNodeSet) {
+		var flag bool
+		for _, node := range services {
+			address := node.Ip + ":" + strconv.Itoa(int(node.Port))
+			if _, ok := oldNodeSet[address]; !ok {
+				flag = true
+				break
+			}
+		}
+		// 表示服务节点无变化
+		if !flag {
+			return
+		}
+	}
+
 	newService := &registry.Service{
 		Name:  key,
 		Nodes: make([]*registry.Node, len(services)),
 	}
+
 	for i, node := range services {
 		newService.Nodes[i] = &registry.Node{
 			Id:       node.InstanceId,
@@ -126,8 +127,17 @@ func (w *nacosWatcher) watcherCallback(services []model.SubscribeService, err er
 			Metadata: node.Metadata,
 		}
 	}
+
+	newNodeSet := make(map[string]struct{})
+	for _, n := range newService.Nodes {
+		newNodeSet[n.Address] = struct{}{}
+	}
+	w.mu.Lock()
+	w.srvNodeMap[key] = newNodeSet
+	w.mu.Unlock()
+
 	w.next <- &registry.Result{
-		Action:  action,
+		Action:  "update",
 		Service: newService,
 	}
 }
@@ -138,7 +148,7 @@ func (w *nacosWatcher) Next() (*registry.Result, error) {
 		return nil, errors.New("nacosWatcher has been stopped")
 	case result, ok := <-w.next:
 		if !ok {
-			return nil, errors.New("nacosWatcher has been stopped")
+			return nil, errors.New("nacos subscribe has something wrong")
 		}
 		return result, nil
 	}
@@ -150,15 +160,5 @@ func (w *nacosWatcher) Stop() {
 		return
 	default:
 		close(w.exit)
-		close(w.next)
-		for _, service := range w.services {
-			param := &vo.SubscribeParam{
-				ServiceName:       service.Name,
-				Clusters:          nil,
-				GroupName:         "",
-				SubscribeCallback: w.watcherCallback,
-			}
-			_ = w.reg.naming.Unsubscribe(param)
-		}
 	}
 }
