@@ -1,7 +1,8 @@
-package nacos
+package registry
 
 import (
 	"errors"
+	"github.com/DMwangnima/nacos-plugin"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
@@ -13,17 +14,17 @@ import (
 )
 
 type nacosRegistry struct {
-	client   ClientOptions
-	server   []ServerOptions
-	instance InstanceOptions
+	client   nacos.ClientOptions
+	server   []nacos.ServerOptions
+	instance nacos.InstanceOptions
 	options  registry.Options
 	naming   naming_client.INamingClient
 }
 
 func NewRegistry(opts ...registry.Option) registry.Registry {
 	n := &nacosRegistry{
-		client: ClientOptions{*constant.NewClientConfig()},
-		server: make([]ServerOptions, 0),
+		client: nacos.ClientOptions{*constant.NewClientConfig()},
+		server: make([]nacos.ServerOptions, 0),
 	}
 	if err := configure(n, opts...); err != nil {
 		panic(err)
@@ -37,7 +38,7 @@ func configure(n *nacosRegistry, opts ...registry.Option) error {
 	}
 
 	// 初始化client
-	if cliOpts, ok := n.options.Context.Value(clientKey{}).([]ClientOption); ok {
+	if cliOpts, ok := n.options.Context.Value(nacos.ClientKey{}).([]nacos.ClientOption); ok {
 		for _, cliOpt := range cliOpts {
 			cliOpt(&n.client)
 		}
@@ -51,9 +52,9 @@ func configure(n *nacosRegistry, opts ...registry.Option) error {
 	// 初始化server
 	var defIp = "127.0.0.1"
 	var defPort uint64 = 8848
-	if nodes, ok := n.options.Context.Value(serverKey{}).([]ServerNode); ok {
+	if nodes, ok := n.options.Context.Value(nacos.ServerKey{}).([]nacos.ServerNode); ok {
 		for _, node := range nodes {
-			srvOptions := ServerOptions{*constant.NewServerConfig(defIp, defPort)}
+			srvOptions := nacos.ServerOptions{*constant.NewServerConfig(defIp, defPort)}
 			for _, opt := range node {
 				opt(&srvOptions)
 			}
@@ -67,7 +68,7 @@ func configure(n *nacosRegistry, opts ...registry.Option) error {
 	}
 
 	// 初始化instance
-	if insOpts, ok := n.options.Context.Value(instanceKey{}).([]InstanceOption); ok {
+	if insOpts, ok := n.options.Context.Value(nacos.InstanceKey{}).([]nacos.InstanceOption); ok {
 		for _, insOpt := range insOpts {
 			insOpt(&n.instance)
 		}
@@ -229,6 +230,7 @@ func (n *nacosRegistry) String() string {
 func localIP() string {
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
+		return ""
 	}
 	defer conn.Close()
 
