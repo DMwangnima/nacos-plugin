@@ -11,6 +11,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"net"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -170,6 +171,8 @@ func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*reg
 		return nil, errors.New("nacos registry hasn't been initialized")
 	}
 
+	s = divideNamespace(s)
+
 	// TODO:考虑是否将clusters与groupName设置为和n.Instance相同的属性
 	param := vo.GetServiceParam{
 		Clusters:    nil,
@@ -272,3 +275,13 @@ func localIP() string {
 
 	return localAddr.IP.String()
 }
+
+// 拆分命名空间，eg: test.Stest1 返回test作为主要命名空间
+func divideNamespace(s string) string {
+	ind := strings.Index(s, ".")
+	if ind == -1 {
+		return s
+	}
+	return s[:ind]
+}
+
