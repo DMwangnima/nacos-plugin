@@ -276,9 +276,9 @@ func localIP() string {
 	return localAddr.IP.String()
 }
 
-// 拆分命名空间，eg: test.Stest1 返回test作为主要命名空间
+// 拆分命名空间，eg: test.Stest1 返回test作为主要命名空间 test.Stest1.Stest2 返回test.Stest1作为主要命名空间
 func divideNamespace(s string) string {
-	ind := strings.Index(s, ".")
+	ind := strings.LastIndex(s, ".")
 	if ind == -1 {
 		return s
 	}
