@@ -1,6 +1,7 @@
 package registry
 
 import (
+	"errors"
 	"github.com/DMwangnima/nacos-plugin"
 	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
@@ -40,11 +41,11 @@ func readServers() {
 		// 做一个简单校验
 		host, port, err := net.SplitHostPort(addr)
 		if err != nil {
-			logger.Fatal(err)
+			logger.Log(logger.ErrorLevel, err)
 		}
 		portInt, err := strconv.Atoi(port)
 		if err != nil {
-			logger.Fatal(err)
+			logger.Log(logger.ErrorLevel, err)
 		}
 		newServer := server{
 			ip:   host,
@@ -57,7 +58,7 @@ func readServers() {
 func readNamespace() {
 	n := os.Getenv(namespaceEnv)
 	if n == "" {
-		logger.Fatal("missing namespace")
+		logger.Log(logger.ErrorLevel, errors.New("missing namespace"))
 	}
 	namespace = n
 }
