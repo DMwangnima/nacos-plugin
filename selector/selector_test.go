@@ -3,7 +3,7 @@ package selector
 import (
 	"fmt"
 	"github.com/DMwangnima/nacos-plugin"
-	regi "github.com/DMwangnima/nacos-plugin/registry"
+	nacosReg "github.com/DMwangnima/nacos-plugin/registry"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/asim/go-micro/v3/selector"
 	"testing"
@@ -16,36 +16,49 @@ const (
 
 func newRegistry() registry.Registry {
 	cli := nacos.Client(
-		nacos.NamespaceId("a9c64542-87bf-432e-816f-4bd5c19806ac"),
+		nacos.NamespaceId("415c7259-d269-47e3-9e83-ccb8abbb0247"),
 	)
 	node := nacos.ServerNode{
-		nacos.IpAddr("192.168.3.7"),
+		nacos.IpAddr("192.168.26.182"),
 		nacos.Port(8848),
 	}
 	node1 := nacos.ServerNode{
-		nacos.IpAddr("192.168.3.15"),
+		nacos.IpAddr("192.168.26.183"),
 		nacos.Port(8848),
 	}
 	node2 := nacos.ServerNode{
-		nacos.IpAddr("192.168.3.16"),
+		nacos.IpAddr("192.168.26.184"),
 		nacos.Port(8848),
 	}
 	srv := nacos.Server(node, node1, node2)
 	ins := nacos.Instance(
+		nacos.Ephemeral(true),
+		nacos.Healthy(true),
+		nacos.ServiceName("gateway"),
 		nacos.Weight(10),
 		nacos.Enable(true),
-		nacos.ServiceName(SERVICE_NAME),
-		nacos.Healthy(true),
-		nacos.Ephemeral(true),
 	)
-	reg := regi.NewRegistry(cli, srv, ins)
-	return reg
+	return nacosReg.NewRegistry(cli, srv, ins)
 }
 
 func printErr(err error) {
 	if err != nil {
 		fmt.Println(err)
 		return
+	}
+}
+
+func TestRepeatSelect(t *testing.T) {
+	reg := newRegistry()
+	s := NewSelector(selector.Registry(reg))
+	service := "broker_client1"
+	for i := 0; i < 1000; i++ {
+		next, _ := s.Select(service)
+		node, err := next()
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Log(node.Id)
 	}
 }
 

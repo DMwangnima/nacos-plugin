@@ -143,6 +143,9 @@ func (n *nacosSelector) Select(service string, opts ...selector.SelectOption) (s
 
 func (n *nacosSelector) Mark(service string, node *registry.Node, err error) {
 	// todo: 对err进行分类
+	if err == nil {
+		return
+	}
 	if service == "" || node == nil {
 		return
 	}
