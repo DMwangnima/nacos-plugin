@@ -2,6 +2,7 @@ package selector
 
 import (
 	"errors"
+	microErr "github.com/asim/go-micro/v3/errors"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/asim/go-micro/v3/registry/cache"
 	"github.com/asim/go-micro/v3/selector"
@@ -143,10 +144,18 @@ func (n *nacosSelector) Select(service string, opts ...selector.SelectOption) (s
 
 func (n *nacosSelector) Mark(service string, node *registry.Node, err error) {
 	// todo: 对err进行分类
-	if err == nil {
+	if err == nil || service == "" || node == nil {
 		return
 	}
-	if service == "" || node == nil {
+	Err, ok := err.(*microErr.Error)
+	if !ok {
+		return
+	}
+	// 还需要确定error的具体含义
+	switch Err.Code {
+	case 4:
+	case 14:
+	default:
 		return
 	}
 	n.mu.RLock()
