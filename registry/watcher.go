@@ -2,6 +2,7 @@ package registry
 
 import (
 	"errors"
+	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/nacos-group/nacos-sdk-go/model"
 	"github.com/nacos-group/nacos-sdk-go/vo"
@@ -60,7 +61,7 @@ func (w *nacosWatcher) subscribeServices() {
 			break
 		}
 		if i >= w.retries {
-			// 打日志
+			logger.Logf(logger.ErrorLevel, "nacos unsubscribe service %s %d times failed", service, w.retries)
 		}
 	}
 

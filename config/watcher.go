@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"github.com/asim/go-micro/v3/config/source"
+	"github.com/asim/go-micro/v3/logger"
 	"time"
 )
 
@@ -19,6 +20,7 @@ func newNacosWatcher(n *nacosSource) (source.Watcher, error) {
 		exit:     make(chan struct{}),
 	}
 	if err := watcher.subscribe(); err != nil {
+		logger.Logf(logger.ErrorLevel, "nacos subscribe config failed, err:%v", err)
 		return nil, err
 	}
 	return watcher, nil

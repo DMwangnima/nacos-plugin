@@ -10,24 +10,24 @@ import (
 
 func newSource() source.Source {
 	cli := nacos.ConfClient(
-		nacos.NamespaceId("a9c64542-87bf-432e-816f-4bd5c19806ac"),
+		nacos.NamespaceId("415c7259-d269-47e3-9e83-ccb8abbb0247"),
 	)
 	node := nacos.ServerNode{
-		nacos.IpAddr("192.168.3.7"),
+		nacos.IpAddr("192.168.26.182"),
 		nacos.Port(8848),
 	}
 	node1 := nacos.ServerNode{
-		nacos.IpAddr("192.168.3.15"),
+		nacos.IpAddr("192.168.26.183"),
 		nacos.Port(8848),
 	}
 	node2 := nacos.ServerNode{
-		nacos.IpAddr("192.168.3.16"),
+		nacos.IpAddr("192.168.26.184"),
 		nacos.Port(8848),
 	}
 	srv := nacos.ConfServer(node, node1, node2)
 	private := nacos.ConfParam(
 		nacos.Group("DEFAULT_GROUP"),
-		nacos.DataId("hello-test"),
+		nacos.DataId("gateway"),
 	)
 	conf := NewSource(cli, srv, private)
 	return conf
@@ -84,4 +84,5 @@ func TestConfig(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println(c)
 }

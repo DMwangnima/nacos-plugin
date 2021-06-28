@@ -3,6 +3,7 @@ package registry
 import (
 	"errors"
 	"github.com/DMwangnima/nacos-plugin"
+	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
@@ -146,7 +147,12 @@ func (n *nacosRegistry) Register(s *registry.Service, opts ...registry.RegisterO
 		return err
 	}
 	// TODO:考虑将逻辑抽离出来
+	logger.Log(logger.InfoLevel, "nacos starting register")
 	_, err = n.naming.RegisterInstance(n.instance.RegisterInstanceParam)
+	if err != nil {
+		logger.Logf(logger.ErrorLevel, "nacos registered failed, err: %v", err)
+	}
+	logger.Log(logger.InfoLevel, "nacos registered successful")
 	return err
 }
 
@@ -162,7 +168,12 @@ func (n *nacosRegistry) Deregister(s *registry.Service, opts ...registry.Deregis
 		GroupName:   n.instance.GroupName,
 		Ephemeral:   n.instance.Ephemeral,
 	}
+	logger.Log(logger.InfoLevel, "nacos starting deregister")
 	_, err := n.naming.DeregisterInstance(param)
+	if err != nil {
+		logger.Logf(logger.ErrorLevel, "nacos deregistered failed, err: %v", err)
+	}
+	logger.Log(logger.InfoLevel, "nacos deregistered successful")
 	return err
 }
 
@@ -182,6 +193,7 @@ func (n *nacosRegistry) GetService(s string, opts ...registry.GetOption) ([]*reg
 
 	service, err := n.naming.GetService(param)
 	if err != nil {
+		logger.Logf(logger.ErrorLevel, "nacos getservice failed, err:%v", err)
 		return nil, err
 	}
 
@@ -233,6 +245,7 @@ func (n *nacosRegistry) ListServices(opts ...registry.ListOption) ([]*registry.S
 	}
 	serviceList, err := n.naming.GetAllServicesInfo(param)
 	if err != nil {
+		logger.Logf(logger.ErrorLevel, "nacos listServices failed, err:%v", err)
 		return nil, err
 	}
 	serviceNames = append(serviceNames, serviceList.Doms...)

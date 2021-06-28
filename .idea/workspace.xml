@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/main" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="91c8b212-a889-4011-a4b2-d859c0bf88aa" name="Default Changelist" comment="Update registry plugin. Add registry and selector plugin.">
+      <change beforePath="$PROJECT_DIR$/config/config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/registry.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/registry.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/watcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/watcher.go" afterDir="false" />
+    </list>
+    <list id="14666653-90a8-401e-8f31-01af9ba18e38" name="Revert &quot;basic nacos-plugin&quot;" comment="Revert &quot;basic nacos-plugin&quot;&#10;&#10;This reverts commit 234e1f1d" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="D:\Go" />
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Scout Wang &lt;33331974+dmwangnima@users.noreply.github.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1paq5JYqETp9cZ8dWIHbzMlRLAi" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="GO_FMT" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\git-project\nacos-plugin\registry" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\git-project\nacos-plugin" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (2)">
+    <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="nacos-plugin" />
+      <working_directory value="$PROJECT_DIR$/config" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/DMwangnima/nacos-plugin/config" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestConfig\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config (2)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="nacos-plugin" />
+      <working_directory value="$PROJECT_DIR$/config" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/DMwangnima/nacos-plugin/config" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestConfig\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="nacos-plugin" />
+      <working_directory value="$PROJECT_DIR$/config" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/DMwangnima/nacos-plugin/config" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestConfig\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (2)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="nacos-plugin" />
+      <working_directory value="$PROJECT_DIR$/selector" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/DMwangnima/nacos-plugin/selector" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestRepeatSelect\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (3)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="nacos-plugin" />
+      <working_directory value="$PROJECT_DIR$/selector" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/DMwangnima/nacos-plugin/selector" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestRepeatSelect\E$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (2)" />
+        <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (1)" />
+        <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config" />
+        <item itemvalue="Go Test.TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (3)" />
+        <item itemvalue="Go Test.TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (2)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="basic nacos-plugin" />
+    <MESSAGE value="change name of module" />
+    <MESSAGE value="upload some missing file" />
+    <MESSAGE value="module information change" />
+    <MESSAGE value="add instance options, update behaviours of register and deregister" />
+    <MESSAGE value="fix register bugs" />
+    <MESSAGE value="add watcher functionality" />
+    <MESSAGE value="Update registry plugin. Add registry and selector plugin." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update registry plugin. Add registry and selector plugin." />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="253" y="85" key="CommitChangelistDialog2" timestamp="1615432253788">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="253" y="85" key="CommitChangelistDialog2/0.0.1376.960@0.0.1376.960" timestamp="1615432253788" />
+    <state x="469" y="235" key="FileChooserDialogImpl" timestamp="1615530569805">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="469" y="235" key="FileChooserDialogImpl/0.0.1376.960@0.0.1376.960" timestamp="1615530569805" />
+    <state width="1333" height="316" key="GridCell.Tab.0.bottom" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.0.bottom/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.0.center" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.0.center/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.0.left" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.0.left/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.0.right" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.0.right/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.1.bottom" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.1.bottom/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.1.center" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.1.center/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.1.left" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.1.left/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state width="1333" height="316" key="GridCell.Tab.1.right" timestamp="1622425306355">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="1333" height="316" key="GridCell.Tab.1.right/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
+    <state x="190" y="125" key="SettingsEditor" timestamp="1615530578153">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="190" y="125" key="SettingsEditor/0.0.1376.960@0.0.1376.960" timestamp="1615530578153" />
+    <state x="281" y="214" key="Vcs.Push.Dialog.v2" timestamp="1615876299663">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="281" y="214" key="Vcs.Push.Dialog.v2/0.0.1376.960@0.0.1376.960" timestamp="1615876299663" />
+    <state x="423" y="215" key="VcsDiffUtil.ChangesDialog" timestamp="1615432285622">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="423" y="215" key="VcsDiffUtil.ChangesDialog/0.0.1376.960@0.0.1376.960" timestamp="1615432285622" />
+    <state width="695" height="487" key="XDebugger.FullValuePopup" timestamp="1618036262619">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state width="695" height="487" key="XDebugger.FullValuePopup/0.0.1376.960@0.0.1376.960" timestamp="1618036262619" />
+    <state x="234" y="210" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1618566601712">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="234" y="210" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1376.960@0.0.1376.960" timestamp="1618566601712" />
+    <state x="290" y="96" width="998" height="947" maximized="true" key="dock-window-1" timestamp="1617160534872">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="290" y="96" width="998" height="947" maximized="true" key="dock-window-1/0.0.1376.960@0.0.1376.960" timestamp="1617160534872" />
+    <state x="387" y="212" width="603" height="536" key="find.popup" timestamp="1615863761061">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="387" y="212" width="603" height="536" key="find.popup/0.0.1376.960@0.0.1376.960" timestamp="1615863761061" />
+    <state x="351" y="205" width="672" height="678" key="search.everywhere.popup" timestamp="1615861945652">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="351" y="205" width="672" height="678" key="search.everywhere.popup/0.0.1376.960@0.0.1376.960" timestamp="1615861945652" />
+  </component>
+</project>

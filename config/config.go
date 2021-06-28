@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/DMwangnima/nacos-plugin"
 	"github.com/asim/go-micro/v3/config/source"
+	"github.com/asim/go-micro/v3/logger"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/config_client"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
@@ -95,6 +96,7 @@ func (n *nacosSource) Read() (*source.ChangeSet, error) {
 	}
 	content, err := n.config.GetConfig(n.param.ConfigParam)
 	if err != nil {
+		logger.Logf(logger.ErrorLevel, "nacos getconfig failed, err:%v", err)
 		return nil, err
 	}
 	newCs := &source.ChangeSet{
