@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewDefaultRegistry(t *testing.T) {
-	reg := NewDefaultRegistry("helloworld")
+	reg := NewDefaultRegistry("helloworld", true)
 	serv := micro.NewService(
 		micro.Name("helloworld"),
 		micro.Registry(reg),

@@ -2,6 +2,7 @@ package registry
 
 import (
 	"errors"
+	"fmt"
 	"github.com/DMwangnima/nacos-plugin"
 	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
@@ -138,6 +139,7 @@ func (n *nacosRegistry) updateInstance(s *registry.Service) error {
 
 // Register和Deregister都只负责当前Service的注册和撤销
 func (n *nacosRegistry) Register(s *registry.Service, opts ...registry.RegisterOption) error {
+	fmt.Println("reg")
 	if n.naming == nil {
 		return errors.New("nacos registry hasn't been initialized")
 	}
@@ -151,9 +153,10 @@ func (n *nacosRegistry) Register(s *registry.Service, opts ...registry.RegisterO
 	_, err = n.naming.RegisterInstance(n.instance.RegisterInstanceParam)
 	if err != nil {
 		logger.Logf(logger.ErrorLevel, "nacos registered failed, err: %v", err)
+		return err
 	}
 	logger.Log(logger.InfoLevel, "nacos registered successful")
-	return err
+	return nil
 }
 
 func (n *nacosRegistry) Deregister(s *registry.Service, opts ...registry.DeregisterOption) error {

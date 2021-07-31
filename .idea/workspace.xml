@@ -27,9 +27,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91c8b212-a889-4011-a4b2-d859c0bf88aa" name="Default Changelist" comment="Update registry plugin. Add registry and selector plugin.">
-      <change beforePath="$PROJECT_DIR$/config/config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/default.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/default.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/default_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/default_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/registry/registry.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/registry.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry/watcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/watcher.go" afterDir="false" />
     </list>
     <list id="14666653-90a8-401e-8f31-01af9ba18e38" name="Revert &quot;basic nacos-plugin&quot;" comment="Revert &quot;basic nacos-plugin&quot;&#10;&#10;This reverts commit 234e1f1d" />
     <option name="SHOW_DIALOG" value="false" />
@@ -92,7 +94,7 @@
       <recent name="D:\git-project\nacos-plugin" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (2)">
+  <component name="RunManager" selected="Go Test.TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry (1)">
     <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="nacos-plugin" />
       <working_directory value="$PROJECT_DIR$/config" />
@@ -126,35 +128,35 @@
       <pattern value="^\QTestConfig\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (2)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="nacos-plugin" />
-      <working_directory value="$PROJECT_DIR$/selector" />
+      <working_directory value="$PROJECT_DIR$/registry" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="github.com/DMwangnima/nacos-plugin/selector" />
+      <package value="github.com/DMwangnima/nacos-plugin/registry" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestRepeatSelect\E$" />
+      <pattern value="^\QTestNewDefaultRegistry\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (3)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="nacos-plugin" />
-      <working_directory value="$PROJECT_DIR$/selector" />
+      <working_directory value="$PROJECT_DIR$/registry" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="github.com/DMwangnima/nacos-plugin/selector" />
+      <package value="github.com/DMwangnima/nacos-plugin/registry" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestRepeatSelect\E$" />
+      <pattern value="^\QTestNewDefaultRegistry\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry (1)" />
+        <item itemvalue="Go Test.TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry" />
         <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (2)" />
         <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (1)" />
         <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config" />
-        <item itemvalue="Go Test.TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (3)" />
-        <item itemvalue="Go Test.TestRepeatSelect in github.com/DMwangnima/nacos-plugin/selector (2)" />
       </list>
     </recent_temporary>
   </component>
@@ -206,77 +208,51 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="253" y="85" key="CommitChangelistDialog2" timestamp="1615432253788">
+    <state width="1333" height="316" key="GridCell.Tab.0.bottom" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state x="253" y="85" key="CommitChangelistDialog2/0.0.1376.960@0.0.1376.960" timestamp="1615432253788" />
-    <state x="469" y="235" key="FileChooserDialogImpl" timestamp="1615530569805">
+    <state width="1333" height="316" key="GridCell.Tab.0.bottom/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="316" key="GridCell.Tab.0.center" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state x="469" y="235" key="FileChooserDialogImpl/0.0.1376.960@0.0.1376.960" timestamp="1615530569805" />
-    <state width="1333" height="316" key="GridCell.Tab.0.bottom" timestamp="1622425306355">
+    <state width="1333" height="316" key="GridCell.Tab.0.center/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="316" key="GridCell.Tab.0.left" timestamp="1627714673052">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.bottom/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.0.center" timestamp="1622425306355">
+    <state width="1333" height="316" key="GridCell.Tab.0.left/0.0.1376.960@0.0.1376.960" timestamp="1627714673052" />
+    <state width="1333" height="316" key="GridCell.Tab.0.right" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.center/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.0.left" timestamp="1622425306355">
+    <state width="1333" height="316" key="GridCell.Tab.0.right/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="316" key="GridCell.Tab.1.bottom" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.left/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.0.right" timestamp="1622425306355">
+    <state width="1333" height="316" key="GridCell.Tab.1.bottom/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="316" key="GridCell.Tab.1.center" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.right/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.1.bottom" timestamp="1622425306355">
+    <state width="1333" height="316" key="GridCell.Tab.1.center/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="316" key="GridCell.Tab.1.left" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.1.bottom/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.1.center" timestamp="1622425306355">
+    <state width="1333" height="316" key="GridCell.Tab.1.left/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="316" key="GridCell.Tab.1.right" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.1.center/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.1.left" timestamp="1622425306355">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state width="1333" height="316" key="GridCell.Tab.1.left/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state width="1333" height="316" key="GridCell.Tab.1.right" timestamp="1622425306355">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state width="1333" height="316" key="GridCell.Tab.1.right/0.0.1376.960@0.0.1376.960" timestamp="1622425306355" />
-    <state x="190" y="125" key="SettingsEditor" timestamp="1615530578153">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="190" y="125" key="SettingsEditor/0.0.1376.960@0.0.1376.960" timestamp="1615530578153" />
-    <state x="281" y="214" key="Vcs.Push.Dialog.v2" timestamp="1615876299663">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="281" y="214" key="Vcs.Push.Dialog.v2/0.0.1376.960@0.0.1376.960" timestamp="1615876299663" />
-    <state x="423" y="215" key="VcsDiffUtil.ChangesDialog" timestamp="1615432285622">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="423" y="215" key="VcsDiffUtil.ChangesDialog/0.0.1376.960@0.0.1376.960" timestamp="1615432285622" />
-    <state width="695" height="487" key="XDebugger.FullValuePopup" timestamp="1618036262619">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state width="695" height="487" key="XDebugger.FullValuePopup/0.0.1376.960@0.0.1376.960" timestamp="1618036262619" />
-    <state x="234" y="210" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1618566601712">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="234" y="210" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1376.960@0.0.1376.960" timestamp="1618566601712" />
-    <state x="290" y="96" width="998" height="947" maximized="true" key="dock-window-1" timestamp="1617160534872">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="290" y="96" width="998" height="947" maximized="true" key="dock-window-1/0.0.1376.960@0.0.1376.960" timestamp="1617160534872" />
-    <state x="387" y="212" width="603" height="536" key="find.popup" timestamp="1615863761061">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="387" y="212" width="603" height="536" key="find.popup/0.0.1376.960@0.0.1376.960" timestamp="1615863761061" />
-    <state x="351" y="205" width="672" height="678" key="search.everywhere.popup" timestamp="1615861945652">
-      <screen x="0" y="0" width="1376" height="960" />
-    </state>
-    <state x="351" y="205" width="672" height="678" key="search.everywhere.popup/0.0.1376.960@0.0.1376.960" timestamp="1615861945652" />
+    <state width="1333" height="316" key="GridCell.Tab.1.right/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/../../goProject/pkg/mod/github.com/asim/go-micro/v3@v3.5.0/server/rpc_server.go</url>
+          <line>890</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/nacos_plugin$TestNewDefaultRegistry_in_github_com_DMwangnima_nacos_plugin_registry.out" NAME="TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry Coverage Results" MODIFIED="1627703473535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

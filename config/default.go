@@ -1,9 +1,9 @@
-package registry
+package config
 
 import (
 	"github.com/DMwangnima/nacos-plugin"
+	"github.com/asim/go-micro/v3/config/source"
 	"github.com/asim/go-micro/v3/logger"
-	"github.com/asim/go-micro/v3/registry"
 	"net"
 	"os"
 	"strconv"
@@ -56,7 +56,7 @@ func readNamespace() {
 	namespace = n
 }
 
-func NewDefaultRegistry(serviceName string, ephemeral bool) registry.Registry {
+func NewDefaultSource(serviceName string) source.Source {
 	readServers()
 	readNamespace()
 	nodes := make([]nacos.ServerNode, len(servers))
@@ -67,16 +67,13 @@ func NewDefaultRegistry(serviceName string, ephemeral bool) registry.Registry {
 		}
 		nodes[i] = node
 	}
-	cli := nacos.Client(
+	cli := nacos.ConfClient(
 		nacos.NamespaceId(namespace),
 	)
-	srv := nacos.Server(nodes...)
-	ins := nacos.Instance(
-		nacos.Weight(10),
-		nacos.Enable(true),
-		nacos.ServiceName(serviceName),
-		nacos.Healthy(true),
-		nacos.Ephemeral(ephemeral),
+	srv := nacos.ConfServer(nodes...)
+	private := nacos.ConfParam(
+		nacos.Group("DEFAULT_GROUP"),
+		nacos.DataId(serviceName),
 	)
-	return NewRegistry(cli, srv, ins)
+	return NewSource(cli, srv, private)
 }
