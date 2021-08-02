@@ -27,11 +27,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91c8b212-a889-4011-a4b2-d859c0bf88aa" name="Default Changelist" comment="Update registry plugin. Add registry and selector plugin.">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry/default.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/default.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry/default_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/default_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry/registry.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/registry.go" afterDir="false" />
     </list>
     <list id="14666653-90a8-401e-8f31-01af9ba18e38" name="Revert &quot;basic nacos-plugin&quot;" comment="Revert &quot;basic nacos-plugin&quot;&#10;&#10;This reverts commit 234e1f1d" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +90,7 @@
       <recent name="D:\git-project\nacos-plugin" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry (1)">
+  <component name="RunManager" selected="Go Test.TestNewDefaultSource in github.com/DMwangnima/nacos-plugin/config">
     <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="nacos-plugin" />
       <working_directory value="$PROJECT_DIR$/config" />
@@ -107,17 +103,6 @@
       <method v="2" />
     </configuration>
     <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config (2)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="nacos-plugin" />
-      <working_directory value="$PROJECT_DIR$/config" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/DMwangnima/nacos-plugin/config" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestConfig\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestConfig in github.com/DMwangnima/nacos-plugin/config" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="nacos-plugin" />
       <working_directory value="$PROJECT_DIR$/config" />
       <framework value="gotest" />
@@ -150,13 +135,24 @@
       <pattern value="^\QTestNewDefaultRegistry\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestNewDefaultSource in github.com/DMwangnima/nacos-plugin/config" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="nacos-plugin" />
+      <working_directory value="$PROJECT_DIR$/config" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/DMwangnima/nacos-plugin/config" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestNewDefaultSource\E$" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestNewDefaultSource in github.com/DMwangnima/nacos-plugin/config" />
         <item itemvalue="Go Test.TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry (1)" />
         <item itemvalue="Go Test.TestNewDefaultRegistry in github.com/DMwangnima/nacos-plugin/registry" />
         <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (2)" />
         <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config (1)" />
-        <item itemvalue="Go Test.TestConfig in github.com/DMwangnima/nacos-plugin/config" />
       </list>
     </recent_temporary>
   </component>
@@ -208,22 +204,22 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1333" height="316" key="GridCell.Tab.0.bottom" timestamp="1627714673053">
+    <state width="1333" height="256" key="GridCell.Tab.0.bottom" timestamp="1627715436928">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.bottom/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
-    <state width="1333" height="316" key="GridCell.Tab.0.center" timestamp="1627714673053">
+    <state width="1333" height="256" key="GridCell.Tab.0.bottom/0.0.1376.960@0.0.1376.960" timestamp="1627715436928" />
+    <state width="1333" height="256" key="GridCell.Tab.0.center" timestamp="1627715436928">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.center/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
-    <state width="1333" height="316" key="GridCell.Tab.0.left" timestamp="1627714673052">
+    <state width="1333" height="256" key="GridCell.Tab.0.center/0.0.1376.960@0.0.1376.960" timestamp="1627715436928" />
+    <state width="1333" height="256" key="GridCell.Tab.0.left" timestamp="1627715436928">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.left/0.0.1376.960@0.0.1376.960" timestamp="1627714673052" />
-    <state width="1333" height="316" key="GridCell.Tab.0.right" timestamp="1627714673053">
+    <state width="1333" height="256" key="GridCell.Tab.0.left/0.0.1376.960@0.0.1376.960" timestamp="1627715436928" />
+    <state width="1333" height="256" key="GridCell.Tab.0.right" timestamp="1627715436928">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
-    <state width="1333" height="316" key="GridCell.Tab.0.right/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state width="1333" height="256" key="GridCell.Tab.0.right/0.0.1376.960@0.0.1376.960" timestamp="1627715436928" />
     <state width="1333" height="316" key="GridCell.Tab.1.bottom" timestamp="1627714673053">
       <screen x="0" y="0" width="1376" height="960" />
     </state>
@@ -240,6 +236,10 @@
       <screen x="0" y="0" width="1376" height="960" />
     </state>
     <state width="1333" height="316" key="GridCell.Tab.1.right/0.0.1376.960@0.0.1376.960" timestamp="1627714673053" />
+    <state x="351" y="205" width="672" height="678" key="search.everywhere.popup" timestamp="1627715314509">
+      <screen x="0" y="0" width="1376" height="960" />
+    </state>
+    <state x="351" y="205" width="672" height="678" key="search.everywhere.popup/0.0.1376.960@0.0.1376.960" timestamp="1627715314509" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

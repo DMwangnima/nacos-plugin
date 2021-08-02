@@ -139,7 +139,6 @@ func (n *nacosRegistry) updateInstance(s *registry.Service) error {
 
 // Register和Deregister都只负责当前Service的注册和撤销
 func (n *nacosRegistry) Register(s *registry.Service, opts ...registry.RegisterOption) error {
-	fmt.Println("reg")
 	if n.naming == nil {
 		return errors.New("nacos registry hasn't been initialized")
 	}
