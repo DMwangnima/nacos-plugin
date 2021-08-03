@@ -12,12 +12,10 @@ import (
 var (
 	servers      []server
 	namespace    string
-	namespaceEnv = "NACOS_NAMESPACE"
-	serversEnv   = []string{
-		"NACOS_SERVER_1",
-		"NACOS_SERVER_2",
-		"NACOS_SERVER_3",
-	}
+	num              int
+	namespaceEnv     = "NACOS_NAMESPACE"
+	serverNumEnv     = "NACOS_SERVER_NUM"
+	serversEnvPrefix = "NACOS_SERVER_"
 )
 
 type server struct {
@@ -25,9 +23,22 @@ type server struct {
 	port int
 }
 
+func readNum() {
+	var err error
+	n := os.Getenv(serverNumEnv)
+	num, err = strconv.Atoi(n)
+	if err != nil {
+		logger.Fatalf("nacos server num is wrong, err: %s", err)
+	}
+	if num <= 0 {
+		logger.Fatalf("nacos server num is invalid, num: %d", num)
+	}
+}
+
 func readServers() {
-	for _, s := range serversEnv {
-		addr := os.Getenv(s)
+	for i := 1; i <= num; i++  {
+		env := serversEnvPrefix + strconv.Itoa(i)
+		addr := os.Getenv(env)
 		if addr == "" {
 			logger.Fatal("missing nacos server address")
 		}
@@ -57,6 +68,7 @@ func readNamespace() {
 }
 
 func NewDefaultSource(serviceName string) source.Source {
+	readNum()
 	readServers()
 	readNamespace()
 	nodes := make([]nacos.ServerNode, len(servers))
