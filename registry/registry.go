@@ -2,7 +2,6 @@ package registry
 
 import (
 	"errors"
-	"fmt"
 	"github.com/DMwangnima/nacos-plugin"
 	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
@@ -299,4 +298,3 @@ func divideNamespace(s string) string {
 	}
 	return s[:ind]
 }
-

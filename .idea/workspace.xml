@@ -28,6 +28,8 @@
   <component name="ChangeListManager">
     <list default="true" id="91c8b212-a889-4011-a4b2-d859c0bf88aa" name="Default Changelist" comment="Update registry plugin. Add registry and selector plugin.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/default.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/default.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/registry.go" beforeDir="false" afterPath="$PROJECT_DIR$/registry/registry.go" afterDir="false" />
     </list>
     <list id="14666653-90a8-401e-8f31-01af9ba18e38" name="Revert &quot;basic nacos-plugin&quot;" comment="Revert &quot;basic nacos-plugin&quot;&#10;&#10;This reverts commit 234e1f1d" />
     <option name="SHOW_DIALOG" value="false" />
