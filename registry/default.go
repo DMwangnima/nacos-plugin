@@ -73,6 +73,7 @@ func readNamespace() {
 
 func readVersion() {
 	v := flag.String("version", defaultVersion, "service version")
+	flag.Parse()
 	version = *v
 }
 
