@@ -1,6 +1,7 @@
 package registry
 
 import (
+	"flag"
 	"github.com/DMwangnima/nacos-plugin"
 	"github.com/asim/go-micro/v3/logger"
 	"github.com/asim/go-micro/v3/registry"
@@ -16,6 +17,9 @@ var (
 	namespaceEnv     = "NACOS_NAMESPACE"
 	serverNumEnv     = "NACOS_SERVER_NUM"
 	serversEnvPrefix = "NACOS_SERVER_"
+	version          string
+	defaultVersion   = "default"
+	versionKey       = "version"
 )
 
 type server struct {
@@ -67,10 +71,30 @@ func readNamespace() {
 	namespace = n
 }
 
-func NewDefaultRegistry(serviceName string, ephemeral bool) registry.Registry {
+func readVersion() {
+	v := flag.String("version", defaultVersion, "service version")
+	version = *v
+}
+
+func NewDefaultRegistry(opts ...Option) registry.Registry {
+	o := options{}
+	o.ephemeral = true
+	for _, opt := range opts {
+		opt(&o)
+	}
+	if o.serviceName == "" {
+		logger.Fatalf("missing service name")
+	}
+	if o.metaData == nil {
+		o.metaData = make(map[string]string)
+	}
+
 	readNum()
 	readServers()
 	readNamespace()
+	readVersion()
+	configureVersion(&o)
+
 	nodes := make([]nacos.ServerNode, len(servers))
 	for i, s := range servers {
 		node := nacos.ServerNode{
@@ -86,9 +110,16 @@ func NewDefaultRegistry(serviceName string, ephemeral bool) registry.Registry {
 	ins := nacos.Instance(
 		nacos.Weight(10),
 		nacos.Enable(true),
-		nacos.ServiceName(serviceName),
+		nacos.ServiceName(o.serviceName),
 		nacos.Healthy(true),
-		nacos.Ephemeral(ephemeral),
+		nacos.Ephemeral(o.ephemeral),
+		nacos.MetaData(o.metaData),
 	)
 	return NewRegistry(cli, srv, ins)
+}
+
+func configureVersion(o *options) {
+	if version != defaultVersion || o.metaData[versionKey] == "" {
+		o.metaData[versionKey] = version
+	}
 }
